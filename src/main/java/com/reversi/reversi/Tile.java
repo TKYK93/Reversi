@@ -1,6 +1,7 @@
 package com.reversi.reversi;
 
 import javafx.geometry.Pos;
+import javafx.scene.control.Tab;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -10,6 +11,7 @@ public class Tile extends StackPane{
     private boolean isEmpty;
     private int x;
     private int y;
+    Circle stone;
 
     public Tile () {
         this.isEmpty = true;
@@ -20,9 +22,11 @@ public class Tile extends StackPane{
 
         setOnMouseClicked(event -> {
             putStone();
-
+            Table.reverseStones(Table.checkRight(this));
+            Table.reverseStones(Table.checkLeft(this));
+            Table.reverseStones(Table.checkUp(this));
+            Table.reverseStones(Table.checkBottom(this));
         });
-
         getChildren().addAll(border);
     }
 
@@ -50,9 +54,17 @@ public class Tile extends StackPane{
         this.y = y;
     }
 
+    public Circle getStone() {
+        return stone;
+    }
+
+    public void setStone(Circle stone) {
+        this.stone = stone;
+    }
+
     private void putStone() {
         if(this.isEmpty){
-            Circle stone = new Circle(Table.STONE_RADIUS);
+            stone = new Circle(Table.STONE_RADIUS);
             if(Table.player1.isMyTurn()){
                 stone.setFill(Color.WHITE);
                 Table.player1.addStone(stone);
@@ -69,4 +81,13 @@ public class Tile extends StackPane{
         setEmpty(false);
     }
 
+    @Override
+    public String toString() {
+        return "Tile{" +
+                "isEmpty=" + isEmpty +
+                ", x=" + x +
+                ", y=" + y +
+                ", stone=" + stone +
+                '}';
+    }
 }
