@@ -26,6 +26,10 @@ public class Tile extends StackPane{
             Table.reverseStones(Table.checkLeft(this));
             Table.reverseStones(Table.checkUp(this));
             Table.reverseStones(Table.checkBottom(this));
+            Table.reverseStones(Table.checkBottomRight(this));
+            Table.reverseStones(Table.checkBottomLeft(this));
+            Table.reverseStones(Table.checkUpRight(this));
+            Table.reverseStones(Table.checkUpLeft(this));
         });
         getChildren().addAll(border);
     }

@@ -83,11 +83,13 @@ public class Table {
         Table.tiles = tiles;
     }
 
-    public static List checkUp(Tile tile){
+    //TODO: Handle errors against the stones in the corners
+
+    public static List checkBottom(Tile tile){
         List<Tile> tempTiles = new ArrayList<>();
         int x = tile.getX();
         int y = tile.getY();
-        for(int i = y-1; i >= 0; i--){
+        for(int i = y+1; i < 8; i++){
             Tile currentTile = tiles[i][x];
             if(currentTile.getStone() == null){
                 tempTiles.clear();
@@ -99,14 +101,14 @@ public class Table {
             tempTiles.add(currentTile);
         }
         return tempTiles;
-
     }
 
-    public static List checkBottom(Tile tile){
+    public static List checkBottomRight(Tile tile){
         List<Tile> tempTiles = new ArrayList<>();
         int x = tile.getX();
         int y = tile.getY();
         for(int i = y+1; i < 8; i++){
+            x++;
             Tile currentTile = tiles[i][x];
             if(currentTile.getStone() == null){
                 tempTiles.clear();
@@ -138,12 +140,87 @@ public class Table {
         return tempTiles;
     }
 
+    public static List checkUpRight(Tile tile){
+        List<Tile> tempTiles = new ArrayList<>();
+        int x = tile.getX();
+        int y = tile.getY();
+        for(int i = y-1; i >= 0; i--){
+            x++;
+            Tile currentTile = tiles[i][x];
+            if(currentTile.getStone() == null){
+                tempTiles.clear();
+                return tempTiles;
+            }
+            if (tile.getStone().getFill() == currentTile.getStone().getFill()){
+                return tempTiles;
+            }
+            tempTiles.add(currentTile);
+        }
+        return tempTiles;
+    }
+
+    public static List checkUp(Tile tile){
+        List<Tile> tempTiles = new ArrayList<>();
+        int x = tile.getX();
+        int y = tile.getY();
+        for(int i = y-1; i >= 0; i--){
+            Tile currentTile = tiles[i][x];
+            if(currentTile.getStone() == null){
+                tempTiles.clear();
+                return tempTiles;
+            }
+            if (tile.getStone().getFill() == currentTile.getStone().getFill()){
+                return tempTiles;
+            }
+            tempTiles.add(currentTile);
+        }
+        return tempTiles;
+    }
+
+    public static List checkUpLeft(Tile tile){
+        List<Tile> tempTiles = new ArrayList<>();
+        int x = tile.getX();
+        int y = tile.getY();
+        for(int i = y-1; i >= 0; i--){
+            x--;
+            Tile currentTile = tiles[i][x];
+            if(currentTile.getStone() == null){
+                tempTiles.clear();
+                return tempTiles;
+            }
+            if (tile.getStone().getFill() == currentTile.getStone().getFill()){
+                return tempTiles;
+            }
+            tempTiles.add(currentTile);
+        }
+        return tempTiles;
+    }
+
     public static List checkLeft(Tile tile){
         List<Tile> tempTiles = new ArrayList<>();
         int x = tile.getX();
         int y = tile.getY();
         for(int i = x-1; i >= 0; i--){
             Tile currentTile = tiles[y][i];
+            if(currentTile.getStone() == null){
+                tempTiles.clear();
+                return tempTiles;
+            }
+            if (tile.getStone().getFill() == currentTile.getStone().getFill()){
+                return tempTiles;
+            }
+            tempTiles.add(currentTile);
+        }
+        return tempTiles;
+    }
+
+    public static List checkBottomLeft(Tile tile){
+        List<Tile> tempTiles = new ArrayList<>();
+        int x = tile.getX();
+        int y = tile.getY();
+        for(int i = y+1; i < 8; i++){
+            x--;
+            Tile currentTile = tiles[i][x];
             if(currentTile.getStone() == null){
                 tempTiles.clear();
                 return tempTiles;
