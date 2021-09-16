@@ -1,5 +1,5 @@
 # Reversi (Othello)
-##Rules
+## Rules
 
 
 See the following link:
@@ -7,6 +7,6 @@ See the following link:
 
 https://en.wikipedia.org/wiki/Reversi
 
-##Technical stacks
+## Technical stacks
 - Java
 - JavaFX
