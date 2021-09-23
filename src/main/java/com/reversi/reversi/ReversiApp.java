@@ -21,8 +21,8 @@ public class ReversiApp extends Application {
     public void start(Stage stage) throws IOException {
 //        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
 //        Scene scene = new Scene(fxmlLoader.load(), 560, 560);
-        Table table = new Table();
-        Scene scene = new Scene(table.createContent(), 560, 560);
+        GameStarter gameStarter = new GameStarter();
+        Scene scene = new Scene(gameStarter.getTableInstance().createContent(), 560, 560);
         stage.setTitle("Welcome to Reversi!");
         stage.setScene(scene);
         stage.show();
