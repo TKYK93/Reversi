@@ -1,8 +1,10 @@
 package com.reversi.reversi;
 
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 
 import java.util.ArrayList;
@@ -14,10 +16,10 @@ public class Table {
     public static Player player2; // stone's color is black
     public static Tile[][] tiles;
 
-    public Table(){
-        player1 = new Player();
+    public Table(Player player1, Player player2){
+        this.player1 = player1;
         player1.setMyTurn(true);
-        player2 = new Player();
+        this.player2 = player2;
         player2.setMyTurn(false);
         tiles = new Tile[8][8];
     }
@@ -59,20 +61,46 @@ public class Table {
         return root;
     }
 
+    public int showWinner () {
+
+        int whiteCounter = 0;
+        int blackCounter = 0;
+
+        for(int i = 0; i < 8; i++){
+            for(int j = 0; j < 8; j++){
+                Tile currentTile = tiles[i][j];
+                Paint color = currentTile.getStone().getFill();
+                if(color.equals(Color.WHITE)){
+                    whiteCounter++;
+                }
+
+                if(color.equals(Color.BLACK)){
+                    blackCounter++;
+                }
+            }
+        }
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Winner");
+        alert.setHeaderText(null);
+
+        alert.showAndWait();
+        if(whiteCounter > blackCounter){
+            alert.setContentText("Player 1 won!");
+        } else if(whiteCounter == blackCounter){
+            alert.setContentText("Draw!");
+        } else {
+            alert.setContentText("Player 2 won!");
+        }
+        return Math.max(whiteCounter, blackCounter);
+    }
+
     public static Player getPlayer1() {
         return player1;
     }
 
-    public static void setPlayer1(Player player1) {
-        Table.player1 = player1;
-    }
-
     public static Player getPlayer2() {
         return player2;
-    }
-
-    public static void setPlayer2(Player player2) {
-        Table.player2 = player2;
     }
 
     public static Tile[][] getTiles() {
@@ -89,6 +117,11 @@ public class Table {
         List<Tile> tempTiles = new ArrayList<>();
         int x = tile.getX();
         int y = tile.getY();
+
+        if(y == 7){
+            return tempTiles;
+        }
+
         for(int i = y+1; i < 8; i++){
             Tile currentTile = tiles[i][x];
             if(currentTile.getStone() == null){
@@ -107,6 +140,11 @@ public class Table {
         List<Tile> tempTiles = new ArrayList<>();
         int x = tile.getX();
         int y = tile.getY();
+
+        if(x == 7){
+            return tempTiles;
+        }
+
         for(int i = y+1; i < 8; i++){
             x++;
             Tile currentTile = tiles[i][x];
@@ -114,7 +152,7 @@ public class Table {
                 tempTiles.clear();
                 return tempTiles;
             }
-            if (tile.getStone().getFill() == currentTile.getStone().getFill()){
+            if (tile.getStone().getFill() == currentTile.getStone().getFill() ){
                 return tempTiles;
             }
             tempTiles.add(currentTile);
@@ -126,6 +164,11 @@ public class Table {
         List<Tile> tempTiles = new ArrayList<>();
         int x = tile.getX();
         int y = tile.getY();
+
+        if(x == 7){
+            return tempTiles;
+        }
+
         for(int i = x+1; i < 8; i++){
             Tile currentTile = tiles[y][i];
             if(currentTile.getStone() == null){
@@ -144,6 +187,11 @@ public class Table {
         List<Tile> tempTiles = new ArrayList<>();
         int x = tile.getX();
         int y = tile.getY();
+
+        if(x == 7){
+            return tempTiles;
+        }
+
         for(int i = y-1; i >= 0; i--){
             x++;
             Tile currentTile = tiles[i][x];
@@ -163,6 +211,11 @@ public class Table {
         List<Tile> tempTiles = new ArrayList<>();
         int x = tile.getX();
         int y = tile.getY();
+
+        if(y == 0) {
+            return tempTiles;
+        }
+
         for(int i = y-1; i >= 0; i--){
             Tile currentTile = tiles[i][x];
             if(currentTile.getStone() == null){
@@ -181,6 +234,11 @@ public class Table {
         List<Tile> tempTiles = new ArrayList<>();
         int x = tile.getX();
         int y = tile.getY();
+
+        if(x == 0){
+            return tempTiles;
+        }
+
         for(int i = y-1; i >= 0; i--){
             x--;
             Tile currentTile = tiles[i][x];
@@ -200,6 +258,11 @@ public class Table {
         List<Tile> tempTiles = new ArrayList<>();
         int x = tile.getX();
         int y = tile.getY();
+
+        if(x == 0){
+            return tempTiles;
+        }
+
         for(int i = x-1; i >= 0; i--){
             Tile currentTile = tiles[y][i];
             if(currentTile.getStone() == null){
@@ -218,6 +281,11 @@ public class Table {
         List<Tile> tempTiles = new ArrayList<>();
         int x = tile.getX();
         int y = tile.getY();
+
+        if(x == 0){
+            return tempTiles;
+        }
+
         for(int i = y+1; i < 8; i++){
             x--;
             Tile currentTile = tiles[i][x];
@@ -231,6 +299,48 @@ public class Table {
             tempTiles.add(currentTile);
         }
         return tempTiles;
+    }
+
+    public static void checkCanPutStones(){
+        int okCounter = 0;
+        for(int i = 0; i < 8; i++){
+            for(int j = 0; j < 8; j++){
+                Tile currentTile = tiles[i][j];
+                System.out.println("currenttile = " + currentTile);
+                if(checkCanPutStone(currentTile, checkBottom(currentTile))){okCounter++;};
+                if(checkCanPutStone(currentTile, checkBottomLeft(currentTile))){okCounter++;};
+                if(checkCanPutStone(currentTile, checkBottomRight(currentTile))){okCounter++;};
+                if(checkCanPutStone(currentTile, checkUp(currentTile))){okCounter++;};
+                if(checkCanPutStone(currentTile, checkUpLeft(currentTile))){okCounter++;};
+                if(checkCanPutStone(currentTile, checkUpRight(currentTile))){okCounter++;};
+                if(checkCanPutStone(currentTile, checkLeft(currentTile))){okCounter++;};
+                if(checkCanPutStone(currentTile, checkRight(currentTile))){okCounter++;};
+                if(okCounter >= 1){
+                    currentTile.markAsPuttable();
+                }
+                okCounter = 0;
+            }
+        }
+    }
+
+    private static boolean checkCanPutStone(Tile tile, List<Tile> tileArray){
+        List<Tile> currentLine= new ArrayList<>(tileArray);
+        if(!currentLine.isEmpty() ){
+            if(currentLine.get(0).getStone().getFill() != tile.getStone().getFill()){
+                return true;
+            }
+        };
+        return false;
+    }
+
+    private static void switchPlayersTurn(){
+        if(player1.isMyTurn()){
+            player1.setMyTurn(false);
+            player2.setMyTurn(true);
+        } else {
+            player1.setMyTurn(true);
+            player2.setMyTurn(false);
+        }
     }
 
 
@@ -248,7 +358,6 @@ public class Table {
         for(int i = 0; i < tiles.size(); i++){
             reverseStone(tiles.get(i));
         }
-
     }
 
 }
